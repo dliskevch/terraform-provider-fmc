@@ -84,7 +84,7 @@ jobs:
         id: get-directory-names
         uses: actions/collect-directory-names-by-file-glob@v1.1
         with:
-          file-glob: '**/*.tf'
+          file-glob: '**/**/*.tf'
           search-directory: '/cypress'
           unique: "true"
   
