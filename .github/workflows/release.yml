@@ -44,7 +44,14 @@ jobs:
       -
         name: tests
         run: cd fmc && go test -v
-
+  gotests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Template Format Check
+        uses: jordanbean-msft/github-action-wth-template-check@v0.4.0
+        with:
+          path: ${{ github.workspace }}
+          shouldScanSubdirectories: true
   generateInputPaths:
     runs-on: ubuntu-latest
     steps:
@@ -71,3 +78,4 @@ jobs:
         uses: jordanbean-msft/github-action-wth-template-check@v0.3.1
         with:
           path: ${{ github.workspace }}/${{ matrix.inputPath }}
+  
