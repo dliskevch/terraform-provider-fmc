@@ -44,7 +44,7 @@ jobs:
       -
         name: tests
         run: cd fmc && go test -v
-  gotests:
+  gendir:
     runs-on: ubuntu-latest
     steps:
       - name: Template Format Check
