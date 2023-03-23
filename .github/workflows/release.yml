@@ -2,6 +2,9 @@ name: lint
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
+  
 jobs:
   golint:
     runs-on: ubuntu-latest
