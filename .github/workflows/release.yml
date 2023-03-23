@@ -67,7 +67,7 @@ jobs:
         id: pl
         uses: Rishabh510/Path-lister-action@master
         with:
-          path: ""
+          path: "**/"
           type: ".tf"
 
       - name: Output results
@@ -76,3 +76,17 @@ jobs:
           for i in ${{ steps.pl.outputs.paths }}; do
           echo $i
           done
+  test:
+    runs-on: ubuntu-latest
+    name: Test Collect Directory Names action
+    steps:
+      - name: Get directory names
+        id: get-directory-names
+        uses: actions/collect-directory-names-by-file-glob@v1.1
+        with:
+          file-glob: '**/*.tf'
+          search-directory: '/cypress'
+          unique: "true"
+  
+      - name: Use Directory Names
+        run: echo "Directory Names are ${{ steps.get-directory-names.outputs.directory-names}
