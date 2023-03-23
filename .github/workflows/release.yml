@@ -82,7 +82,7 @@ jobs:
     steps:
       - name: Get directory names
         id: get-directory-names
-        uses: actions/collect-directory-names-by-file-glob@v1.1
+        uses:  actions/checkout@v2
         with:
           file-glob: '**/**/*.tf'
           search-directory: '/'
