@@ -89,4 +89,4 @@ jobs:
           unique: "true"
   
       - name: Use Directory Names
-        run: echo "Directory Names are ${{ steps.get-directory-names.outputs.directory-names}
+        run: echo "Directory Names are ${{ steps.get-directory-names.outputs.directory-names}}"
