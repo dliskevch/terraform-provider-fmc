@@ -68,7 +68,7 @@ jobs:
         uses: Rishabh510/Path-lister-action@master
         with:
           path: ".github/"
-          type: ".yml"
+          type: ".tf"
 
       - name: Output results
         run: |
