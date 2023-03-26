@@ -91,7 +91,11 @@ jobs:
         run: go mod vendor
       - 
         name: gendocs
-        run: go get github.com/hashicorp/terraform-plugin-docs@latest && go generate ./... -mod=mod
+        run: go get github.com/hashicorp/terraform-plugin-docs@latest
+        
+      - 
+        name: gendocst
+        run: go generate ./...
 
           
           
