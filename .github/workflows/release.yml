@@ -93,7 +93,7 @@ jobs:
         
       - 
         name: gendocst
-        run: go generate 
+        run: go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
           
           
