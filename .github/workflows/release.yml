@@ -95,7 +95,7 @@ jobs:
         
       - 
         name: gendocst
-        run: go generate ./...
+        run: go generate ./... -mod=readonly
 
           
           
