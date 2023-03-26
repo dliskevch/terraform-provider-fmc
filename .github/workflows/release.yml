@@ -87,15 +87,12 @@ jobs:
         with:
           go-version: 1.17
       - 
-        name: gen
-        run: go mod vendor
-      - 
         name: gendocs
         run: go get github.com/hashicorp/terraform-plugin-docs@latest
         
       - 
         name: gendocst
-        run: go generate ./... -mod=readonly
+        run: go mod vendor && go generate ./... 
 
           
           
