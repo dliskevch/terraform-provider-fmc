@@ -92,7 +92,7 @@ jobs:
         
       - 
         name: gendocst
-        run: go mod vendor && go generate ./... 
+        run: go generate 
 
           
           
