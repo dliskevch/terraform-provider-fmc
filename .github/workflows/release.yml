@@ -72,7 +72,7 @@ jobs:
           path: ${{ github.workspace }}
           shouldScanSubdirectories: true
           
-   golint:
+  gendocs:
     runs-on: ubuntu-latest
     steps:
       -
