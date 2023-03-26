@@ -71,6 +71,28 @@ jobs:
         with:
           path: ${{ github.workspace }}
           shouldScanSubdirectories: true
+          
+   golint:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Unshallow
+        run: git fetch --prune --unshallow
+      -
+        name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - 
+        name: gendocs
+        run: go get github.com/hashicorp/terraform-plugin-docs@latest && go generate ./...
+
+          
+          
+          
   list:
     name: Path lister
     runs-on: ubuntu-latest
