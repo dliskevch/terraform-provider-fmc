@@ -67,7 +67,7 @@ jobs:
           mkdir tfplugindocs
           sudo unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplugindocs
           sudo mv tfplugindocs /usr/local/bin/
-          tfplugindocs generate
+          make generate
 
           
       -
