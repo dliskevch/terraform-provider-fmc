@@ -99,7 +99,10 @@ jobs:
           go-version: 1.17
       - 
         name: gendocs
-        run: go mod vendor
+        run: |
+          go install https://github.com/hashicorp/terraform-plugin-docs@v0.14.1
+          go generate
+#        run: go mod vendor
 #         run: go get github.com/hashicorp/terraform-plugin-docs@latest
         
       - 
