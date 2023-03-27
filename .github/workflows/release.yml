@@ -100,7 +100,7 @@ jobs:
       - 
         name: gendocs
         run: |
-          go install https://github.com/hashicorp/terraform-plugin-docs@v0.14.1
+          go install github.com/hashicorp/terraform-plugin-docs@v0.14.1
           go generate
 #        run: go mod vendor
 #         run: go get github.com/hashicorp/terraform-plugin-docs@latest
