@@ -63,9 +63,9 @@ jobs:
       - name: Output results
         run: |
           sudo apt-get install wget unzip -y
-          sudo wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
+          wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
           mkdir tfplugindocs
-          sudo unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplugindocs
+          unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplugindocs
           sudo mv tfplugindocs /usr/local/bin/
           sudo make generate
 
