@@ -60,9 +60,19 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
+      - name: Output results
+        run: |
+          sudo apt-get install wget unzip -y
+          sudo wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
+          sudo unzip tfplugindocs_0.14.1_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          tfpagindocs generate
+
+          
       -
         name: tests
         run: cd fmc && go test -v
+
   gendir:
     runs-on: ubuntu-latest
     steps:
