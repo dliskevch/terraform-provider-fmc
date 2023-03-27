@@ -1,7 +1,7 @@
 name: lint
 on:
   push:
-    branches: [ main ]
+    branches: "**"
     tags:
       - 'v*'
   
