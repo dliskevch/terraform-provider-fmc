@@ -65,7 +65,7 @@ jobs:
           sudo apt-get install wget unzip -y
           sudo wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
           mkdir tfplagindocs
-          sudo unzip tfplugindocs_0.14.1_linux_amd64.zip tfplagindocs
+          sudo unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplagindocs
           sudo mv terraform /usr/local/bin/
           tfpagindocs generate
 
