@@ -59,7 +59,39 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+  tflint:
+    runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+      name: Checkout source code
+
+    - uses: actions/cache@v3
+      name: Cache plugin dir
+      with:
+        path: ~/.tflint.d/plugins
+        key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+
+    - uses: terraform-linters/setup-tflint@v3
+      name: Setup TFLint
+      with:
+        tflint_version: v0.44.1
+
+    - name: Show version
+      run: tflint --version
+
+    - name: Init TFLint
+      run: tflint --init
+      env:
+        # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Run TFLint
+      run: tflint -f compact
 #       - name: Upload SARIF file
 #         uses: github/codeql-action/upload-sarif@v2
 #         with:
@@ -70,128 +102,128 @@ jobs:
 #           # Used to differentiate multiple results for one commit
 #           category: my-analysis-tool
 
-  buildlint:
-    runs-on: ubuntu-latest
-    permissions:
-      # required for all workflows
-      security-events: write
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
-    steps:
-      # This step checks out a copy of your repository.
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: /home/runner/work/terraform-provider-fmc/results/go.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: my-analysis-tool
+#   buildlint:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       # required for all workflows
+#       security-events: write
+#       # only required for workflows in private repositories
+#       actions: read
+#       contents: read
+#     steps:
+#       # This step checks out a copy of your repository.
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+#       - name: Upload SARIF file
+#         uses: github/codeql-action/upload-sarif@v2
+#         with:
+#           # Path to SARIF file relative to the root of the repository
+#           sarif_file: /home/runner/work/terraform-provider-fmc/results/go.sarif
+#           # Optional category for the results
+#           # Used to differentiate multiple results for one commit
+#           category: my-analysis-tool
 
-  gotests:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Unshallow
-        run: git fetch --prune --unshallow
-      -
-        name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-      - name: Output results
-        run: |
-          sudo apt-get install wget unzip -y
-          wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
-          mkdir tfplugindocs
-          unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplugindocs
-          mv tfplugindocs /usr/local/bin/
-          sudo make generate
+#   gotests:
+#     runs-on: ubuntu-latest
+#     steps:
+#       -
+#         name: Checkout
+#         uses: actions/checkout@v2
+#       -
+#         name: Unshallow
+#         run: git fetch --prune --unshallow
+#       -
+#         name: Set up Go
+#         uses: actions/setup-go@v2
+#         with:
+#           go-version: 1.17
+#       - name: Output results
+#         run: |
+#           sudo apt-get install wget unzip -y
+#           wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.14.1/tfplugindocs_0.14.1_linux_amd64.zip
+#           mkdir tfplugindocs
+#           unzip tfplugindocs_0.14.1_linux_amd64.zip -d tfplugindocs
+#           mv tfplugindocs /usr/local/bin/
+#           sudo make generate
 
           
-      -
-        name: tests
-        run: cd fmc && go test -v
+#       -
+#         name: tests
+#         run: cd fmc && go test -v
 
-  gendir:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Template Format Check
-        uses: jordanbean-msft/github-action-wth-template-check@v0.4.0
-        with:
-          path: ${{ github.workspace }}
-          shouldScanSubdirectories: true
+#   gendir:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Template Format Check
+#         uses: jordanbean-msft/github-action-wth-template-check@v0.4.0
+#         with:
+#           path: ${{ github.workspace }}
+#           shouldScanSubdirectories: true
           
-  gendocs:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Unshallow
-        run: git fetch --prune --unshallow
-      -
-        name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-      - 
-        name: gendocs
-        run: |
-          go install github.com/hashicorp/terraform-plugin-docs@v0.14.1
-          go generate
-#        run: go mod vendor
-#         run: go get github.com/hashicorp/terraform-plugin-docs@latest
+#   gendocs:
+#     runs-on: ubuntu-latest
+#     steps:
+#       -
+#         name: Checkout
+#         uses: actions/checkout@v2
+#       -
+#         name: Unshallow
+#         run: git fetch --prune --unshallow
+#       -
+#         name: Set up Go
+#         uses: actions/setup-go@v2
+#         with:
+#           go-version: 1.17
+#       - 
+#         name: gendocs
+#         run: |
+#           go install github.com/hashicorp/terraform-plugin-docs@v0.14.1
+#           go generate
+# #        run: go mod vendor
+# #         run: go get github.com/hashicorp/terraform-plugin-docs@latest
         
-      - 
-        name: gendocst
-        run: go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+#       - 
+#         name: gendocst
+#         run: go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
           
           
           
-  list:
-    name: Path lister
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v1
-        with:
-          python-version: "3.7"
+#   list:
+#     name: Path lister
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Set up Python 3.7
+#         uses: actions/setup-python@v1
+#         with:
+#           python-version: "3.7"
 
-      - uses: actions/checkout@v1
+#       - uses: actions/checkout@v1
 
-      - name: Fetch action
-        id: pl
-        uses: Rishabh510/Path-lister-action@master
-        with:
-          path: "/"
-          type: ".tf"
+#       - name: Fetch action
+#         id: pl
+#         uses: Rishabh510/Path-lister-action@master
+#         with:
+#           path: "/"
+#           type: ".tf"
 
-      - name: Output results
-        run: |
-          echo "Found ${{ steps.pl.outputs.path_count }} file(s) with this extension:"
-          for i in ${{ steps.pl.outputs.paths }}; do
-          echo $i
-          done
-  test:
-    runs-on: ubuntu-latest
-    name: Test Collect Directory Names action
-    steps:
-      - name: Get directory names
-        id: get-directory-names
-        uses:  actions/checkout@v2
-        with:
-          file-glob: '**/*.tf'
-          search-directory: '/'
-          unique: "true"
+#       - name: Output results
+#         run: |
+#           echo "Found ${{ steps.pl.outputs.path_count }} file(s) with this extension:"
+#           for i in ${{ steps.pl.outputs.paths }}; do
+#           echo $i
+#           done
+#   test:
+#     runs-on: ubuntu-latest
+#     name: Test Collect Directory Names action
+#     steps:
+#       - name: Get directory names
+#         id: get-directory-names
+#         uses:  actions/checkout@v2
+#         with:
+#           file-glob: '**/*.tf'
+#           search-directory: '/'
+#           unique: "true"
   
-      - name: Use Directory Names
-        run: echo "Directory Names are ${{ steps.get-directory-names.outputs.directory-names}}"
+#       - name: Use Directory Names
+#         run: echo "Directory Names are ${{ steps.get-directory-names.outputs.directory-names}}"
