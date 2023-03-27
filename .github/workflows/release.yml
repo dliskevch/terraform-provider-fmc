@@ -55,17 +55,21 @@ jobs:
         uses: github/codeql-action/analyze@v2
       - 
         name: Perform CodeQL Analysis
-        run: cp /home/runner/work/terraform-provider-fmc/results/go.sarif go.sarif
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        run: cp /home/runner/work/terraform-provider-fmc/results/go.sarif codeql-analises.sarif
+      - name: Commit & Push changes
+        uses: actions-js/push@master
         with:
-          # Path to SARIF file relative to the root of the repository
-          # sarif_file: "/home/runner/work/terraform-provider-fmc/results/go.sarif"
-          sarif_file: go.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: my-analysis-tool
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Upload SARIF file
+#         uses: github/codeql-action/upload-sarif@v2
+#         with:
+#           # Path to SARIF file relative to the root of the repository
+#           # sarif_file: "/home/runner/work/terraform-provider-fmc/results/go.sarif"
+#           sarif_file: go.sarif
+#           # Optional category for the results
+#           # Used to differentiate multiple results for one commit
+#           category: my-analysis-tool
 
   buildlint:
     runs-on: ubuntu-latest
