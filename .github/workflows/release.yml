@@ -20,7 +20,26 @@ jobs:
         with:
           # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
           version: v1.29
+
+
+# Checkov scans cloud infrastructure configurations to find misconfigurations before they're deployed
+
+  Chekov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
           
+      - name: Test infrastructure
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: terraform
+
+
   trivy:
     name: Build
     runs-on: ubuntu-20.04
