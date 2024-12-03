@@ -44,6 +44,8 @@ jobs:
   trivy:
     name: Build
     runs-on: ubuntu-20.04
+    needs:
+      -  golangci
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
