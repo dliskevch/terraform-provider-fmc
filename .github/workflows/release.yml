@@ -45,7 +45,7 @@ jobs:
     name: Build
     runs-on: ubuntu-20.04
     needs:
-      - lint
+      - golangci
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
