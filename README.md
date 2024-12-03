@@ -1,4 +1,4 @@
-# FMC Provider for terraform 4
+# FMC Provider for terraform 1
 
 > **Note:** this Terraform provider is now publically available on the [Terraform Registry](https://registry.terraform.io/providers/CiscoDevNet/fmc/latest).
 
